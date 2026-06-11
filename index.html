@@ -23,6 +23,7 @@
 
 <style>
   :root{
+    color-scheme:light;
     --navy:#1F3864; --blue:#2E75B6; --sky:#5B9BD5; --bg1:#eaf2fb; --bg2:#dbe9fb;
     --sun:#F2B705; --coral:#EF6F6C; --green:#4CAF7D; --purple:#7E6BD8;
     --ink:#16243d; --card:#ffffff; --shadow:0 12px 34px rgba(31,56,100,.16);
@@ -33,7 +34,7 @@
     font-family:'Trebuchet MS','Segoe UI',system-ui,sans-serif;
     color:var(--ink);
     background:radial-gradient(1200px 800px at 50% -10%, #ffffff 0%, var(--bg1) 45%, var(--bg2) 100%);
-    min-height:100vh; display:flex; align-items:center; justify-content:center; padding:24px;
+    min-height:100vh; display:flex; align-items:flex-start; justify-content:center; padding:24px;
   }
   .wrap{width:100%; max-width:880px;}
   .screen{display:none; animation:pop .35s ease;}
@@ -216,6 +217,7 @@
             <div class="row">
               <button id="btnStartCam" class="btn green" onclick="startCamera()">📷 Turn on camera</button>
               <button id="btnSnap" class="btn coral hidden" onclick="takePhoto()">Take the picture!</button>
+              <button id="btnCloseCam" class="btn secondary hidden" onclick="resetToy()">✕ Close camera</button>
               <button id="btnRetake" class="btn secondary hidden" onclick="retake()">Retake</button>
               <button id="btnSave" class="btn sun hidden" onclick="savePhoto()">💾 Save picture</button>
             </div>
@@ -243,9 +245,9 @@
 
 <div id="toast" class="toast"></div>
 
-<!-- LOGO: the Alpha Summer image goes here as a data URI. Replace the empty
-     string with: data:image/png;base64,XXXX . It then appears on every screen. -->
-<script>window.ALPHA_LOGO = "";</script>
+<!-- LOGO: upload your image to the GitHub repo as "logo.png" and it appears on
+     every screen automatically. To use a different filename, change it here. -->
+<script>window.ALPHA_LOGO = "logo.png";</script>
 
 <script>
 /* ============================================================
@@ -368,7 +370,7 @@ function openExternal(url){ window.open(url,'_blank','noopener'); }
 function resetToy(){
   stopCamera();
   show('cam',false); show('snap',false);
-  show('btnStartCam',true); show('btnSnap',false); show('btnRetake',false); show('btnSave',false);
+  show('btnStartCam',true); show('btnSnap',false); show('btnCloseCam',false); show('btnRetake',false); show('btnSave',false);
   document.getElementById('camFallback').classList.add('hidden');
   document.getElementById('camHint').textContent='';
 }
@@ -379,7 +381,7 @@ async function startCamera(){
   try{
     stream = await navigator.mediaDevices.getUserMedia({ video:{ facingMode:'environment' }, audio:false });
     const v=document.getElementById('cam'); v.srcObject=stream;
-    show('cam',true); show('btnStartCam',false); show('btnSnap',true);
+    show('cam',true); show('btnStartCam',false); show('btnSnap',true); show('btnCloseCam',true);
     document.getElementById('camHint').textContent='When your toy looks great, tap "Take the picture!"';
   }catch(err){ camFail(); }
 }
@@ -395,7 +397,7 @@ function takePhoto(){
   const data=c.toDataURL('image/png');
   const img=document.getElementById('snap'); img.src=data;
   show('cam',false); show('snap',true);
-  show('btnSnap',false); show('btnRetake',true); show('btnSave',true);
+  show('btnSnap',false); show('btnCloseCam',false); show('btnRetake',true); show('btnSave',true);
   stopCamera();
 }
 function retake(){ show('snap',false); show('btnRetake',false); show('btnSave',false); startCamera(); }
@@ -426,10 +428,12 @@ function initLogo(){
   if(!CONFIG.logoUrl) return;
   document.querySelectorAll('.card').forEach(card=>{
     const img=document.createElement('img');
-    img.className='logo'; img.src=CONFIG.logoUrl; img.alt='Alpha Summer';
+    img.className='logo'; img.alt='Alpha Summer';
+    img.onload=()=>{ const b=card.querySelector('.brand'); if(b) b.style.display='none'; };
+    img.onerror=()=>{ img.remove(); };   // logo not uploaded yet: keep text header
+    img.src=CONFIG.logoUrl;
     card.insertBefore(img, card.firstChild);
   });
-  document.querySelectorAll('.brand').forEach(b=>b.style.display='none');
 }
 initLogo();
 
