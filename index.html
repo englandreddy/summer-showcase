@@ -149,7 +149,7 @@
     <div class="card">
       <div class="topbar">
         <div class="pagetitle">👋 <span id="dashHi">Hi!</span></div>
-        <button class="btn secondary small" onclick="showScreen('screen-name')">Switch name</button>
+        <button class="btn secondary small" onclick="showScreen('screen-name')">Change student</button>
       </div>
       <p class="lead">What do you want to show? Tap a button.</p>
       <div class="tiles">
@@ -182,13 +182,27 @@
         <div class="pagetitle">📖 AI Storybook Authors</div>
         <button class="btn secondary small" onclick="backToDash()">← Back to dashboard</button>
       </div>
-      <p class="lead">Step 1: copy the prompt. Step 2: open Gemini and paste it in. Then fill in the blanks together!</p>
-      <div class="promptbox" id="promptBox"></div>
-      <div class="row">
-        <button class="btn sun" onclick="copyPrompt()">📋 Copy the prompt</button>
-        <button class="btn" onclick="openExternal(CONFIG.geminiUrl)">✨ Open Gemini</button>
+      <div class="steps">
+
+        <div class="step">
+          <div class="head"><div class="num">1</div><h3>Make your paper storyboard</h3></div>
+          <p>Use the storyboard paper on your table to plan your story: who is your character, what do they want, what is the problem, and how does it end?</p>
+        </div>
+
+        <div class="step">
+          <div class="head"><div class="num">2</div><h3>Copy your prompt</h3></div>
+          <p>This is the magic sentence that tells the AI what to draw. Tap to copy it.</p>
+          <div class="promptbox" id="promptBox"></div>
+          <button class="btn sun" style="margin-top:14px;width:auto" onclick="copyPrompt()">📋 Copy the prompt</button>
+        </div>
+
+        <div class="step">
+          <div class="head"><div class="num">3</div><h3>Create it in Gemini</h3></div>
+          <p>Open Gemini, paste your prompt, and fill in the blanks from your storyboard to make your storybook pictures!</p>
+          <button class="btn" style="margin-top:14px;width:auto" onclick="openExternal(CONFIG.geminiUrl)">✨ Open Gemini</button>
+        </div>
+
       </div>
-      <p class="hint">Tip: paste the prompt into Gemini, then change the blanks to make it your own story.</p>
     </div>
   </section>
 
