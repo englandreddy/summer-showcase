@@ -100,6 +100,9 @@
     background-position:calc(100% - 26px) 24px, calc(100% - 18px) 24px; background-size:8px 8px,8px 8px; background-repeat:no-repeat;
   }
   select:focus{transform:translate(-2px,-2px); box-shadow:6px 6px 0 var(--blue);}
+  input[type=password]{width:100%; font-size:1.35rem; padding:16px 18px; border-radius:14px; border:3px solid var(--ink); background:#fff; color:var(--ink); outline:none; font-family:'Inter',sans-serif; font-weight:600; box-shadow:var(--shadow-sm); transition:transform .08s, box-shadow .08s;}
+  input[type=password]:focus{transform:translate(-2px,-2px); box-shadow:6px 6px 0 var(--blue);}
+  .err{color:#d12f1c; text-align:center; font-weight:700; min-height:1.4em; margin-top:12px;}
 
   .btn{
     display:inline-flex; align-items:center; justify-content:center; gap:12px;
@@ -243,7 +246,23 @@
 
 <div class="wrap">
 
-  <section id="screen-name" class="screen active">
+  <section id="screen-password" class="screen active">
+    <div class="card full">
+      <div class="namebox">
+        <div class="hero">
+          <svg class="logo-hero" role="img" aria-label="Alpha Summer"><use href="#alphaLogo"></use></svg>
+          <div class="pill">★ SUMMER SHOWCASE 2026</div>
+          <p class="lead" style="margin-top:18px;">Welcome! Please enter the password.</p>
+        </div>
+        <input id="pw" type="password" placeholder="Password" autocomplete="off" />
+        <div style="height:14px"></div>
+        <button class="btn" onclick="checkPassword()">Enter &rarr;</button>
+        <div id="pwerr" class="err"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="screen-name" class="screen">
     <div class="card full">
       <div class="namebox">
         <div class="hero">
@@ -290,6 +309,9 @@
    CONFIG  -  EDIT THIS
    ============================================================ */
 const CONFIG = {
+  // Opening password (families type this to get in):
+  password: "Alpha$ummer26",
+
   // One entry per student.
   //   band: "k3"  -> First Responders + Astro Arcade   (game link)
   //   band: "l46" -> Flight School + App Architects      (app link)
@@ -362,6 +384,16 @@ function showScreen(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   window.scrollTo(0,0);
+}
+
+function checkPassword(){
+  const val = document.getElementById('pw').value.trim();
+  if(val.toLowerCase() === String(CONFIG.password).toLowerCase()){
+    document.getElementById('pwerr').textContent = '';
+    showScreen('screen-name');
+  } else {
+    document.getElementById('pwerr').textContent = 'Oops, try again!';
+  }
 }
 
 function populateNames(){
@@ -502,6 +534,8 @@ function addPixels(){
 
 populateNames();
 addPixels();
+
+(function(){ const pw=document.getElementById('pw'); if(pw) pw.addEventListener('keydown', e=>{ if(e.key==='Enter') checkPassword(); }); })();
 
 /* swipe + arrow-key navigation for the slideshow */
 (function initSlider(){
