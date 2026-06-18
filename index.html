@@ -64,6 +64,11 @@
   .daymid{flex:1; min-height:0; display:flex; flex-direction:column; width:100%; max-width:1100px; margin:0 auto;}
   .stage{flex:1; min-height:0; display:flex; align-items:center; justify-content:center; gap:14px; width:100%;}
   .stage > .wkphoto, .stage > .videobox{height:100%; width:auto; max-width:100%; margin:0;}
+  .headshot{aspect-ratio:1/1; border-radius:50%; border:3px solid var(--ink); box-shadow:var(--shadow); background:#eef0ff; overflow:hidden; display:flex; align-items:center; justify-content:center;}
+  .headshot img{width:100%; height:100%; object-fit:cover;}
+  .headshot .ph{font-family:'Fredoka',sans-serif; font-weight:600; color:#9aa3d8; font-size:.95rem; text-align:center; padding:0 12px;}
+  .stage > .headshot{height:100%; width:auto; max-width:100%; margin:0;}
+  @media(max-width:600px){ .stage > .headshot{height:auto; width:62%; max-width:300px;} }
   .stage.two > .wkphoto, .stage.two > .videobox{flex:1 1 0; max-width:calc(50% - 7px); min-width:0;}
   @media(max-width:600px){
     .stage{flex-direction:column;}
@@ -290,19 +295,19 @@ const CONFIG = {
   //   band: "l46" -> Flight School + App Architects      (app link)
   //   loom = Core Skills Loom link   game = Astro Arcade link   app = App Architects link
   students: [
-    { name: "Emerson Rhizor",          band: "k3",  loom: "", game: "", app: "" },
-    { name: "Desiree Danziger-Shieh",  band: "k3",  loom: "", game: "", app: "" },
-    { name: "Theo Xu",                 band: "k3",  loom: "", game: "", app: "" },
-    { name: "Arden Chatham",           band: "k3",  loom: "", game: "", app: "" },
-    { name: "Leela Kapoor",            band: "k3",  loom: "", game: "", app: "" },
-    { name: "Brewster Conrad",         band: "k3",  loom: "", game: "", app: "" },
-    { name: "Alexandra Townsend",      band: "k3",  loom: "", game: "", app: "" },
-    { name: "Olivia Xu",               band: "k3",  loom: "", game: "", app: "" },
-    { name: "Misha Grbovic",           band: "k3",  loom: "", game: "", app: "" },
+    { name: "Emerson Rhizor",          band: "k3",  photo: "", loom: "", game: "", app: "" },
+    { name: "Desiree Danziger-Shieh",  band: "k3",  photo: "", loom: "", game: "", app: "" },
+    { name: "Theo Xu",                 band: "k3",  photo: "", loom: "", game: "", app: "" },
+    { name: "Arden Chatham",           band: "k3",  photo: "", loom: "", game: "", app: "" },
+    { name: "Leela Kapoor",            band: "k3",  photo: "", loom: "", game: "", app: "" },
+    { name: "Brewster Conrad",         band: "k3",  photo: "", loom: "", game: "", app: "" },
+    { name: "Alexandra Townsend",      band: "k3",  photo: "", loom: "", game: "", app: "" },
+    { name: "Olivia Xu",               band: "k3",  photo: "", loom: "", game: "", app: "" },
+    { name: "Misha Grbovic",           band: "k3",  photo: "", loom: "", game: "", app: "" },
 
-    { name: "Adeline Rhizor",          band: "l46", loom: "", game: "", app: "" },
-    { name: "Mourad Khalifa",          band: "l46", loom: "", game: "", app: "" },
-    { name: "Dean Danziger-Shieh",     band: "l46", loom: "", game: "", app: "" }
+    { name: "Adeline Rhizor",          band: "l46", photo: "", loom: "", game: "", app: "" },
+    { name: "Mourad Khalifa",          band: "l46", photo: "", loom: "", game: "", app: "" },
+    { name: "Dean Danziger-Shieh",     band: "l46", photo: "", loom: "", game: "", app: "" }
   ],
 
   // The cards that describe a day at Alpha, one list per band. Each card:
@@ -336,7 +341,7 @@ const CONFIG = {
         desc:"At Alpha, I do my academics (or core skills) for 2 hours in the morning on a learning platform called TimeBack. With the apps calibrated to my knowledge grade level in each subject, I'm able to work at my own pace and earn XP! Press the play button to watch my Loom, which explains how TimeBack and XP works and which app I enjoyed the most this week.",
         action:{ type:"loom" } },
       { emoji:"✈️", title:"Flight School", skill:"Critical Thinking", img:"",
-        desc:"Workshops are where we learn real-world skills by doing. This week, we practiced critical thinking by flying and maneuvering drones, building obstacle courses as a team, and using code blocks to program an autonomous flight path." },
+        desc:"Workshops are where we learn real-world skills by doing. This week, we practiced critical thinking by flying and maneuvering drones, building obstacle courses as a team, and using code blocks to program an autonomous flight path. Our Test2Pass for this workshop is to showcase our drone's autonomous flight course that we coded together as a team." },
       { emoji:"📱", title:"App Architects", skill:"Giving and Receiving Feedback", img:"",
         desc:"In App Architects, we learned to vibe code and ship a working app on Lovable, while practicing giving, receiving, and implementing feedback to make my app better. Our Test2Pass for this workshop is to explain to my parents (you!) how my app works, the problem that it solves, and the feedback I used to improve it.",
         action:{ type:"link", field:"app", label:"📱 Open my app", btn:"pink" } },
@@ -386,7 +391,9 @@ function loomEmbed(url){
 let curSlide = 0;
 function buildDay(){
   const band = (selectedStudent && selectedStudent.band) || 'k3';
-  const cards = (CONFIG.day && CONFIG.day[band]) || [];
+  const dayCards = (CONFIG.day && CONFIG.day[band]) || [];
+  const intro = { intro:true, emoji:"👋", title:"Hi, I'm "+firstName()+"!", desc:"And this is what my day at Alpha looks like!" };
+  const cards = [intro].concat(dayCards);
   const colors = ['var(--blue)','var(--green)','var(--coral)','var(--pink)','var(--yellow)'];
   const wrap = document.getElementById('slides');
   const dots = document.getElementById('slDots');
@@ -404,7 +411,12 @@ function buildDay(){
     if(c.desc){ const p=document.createElement('p'); p.textContent=c.desc; card.appendChild(p); }
 
     let photoEl=null;
-    if(typeof c.img === 'string'){
+    if(c.intro){
+      photoEl=document.createElement('div'); photoEl.className='headshot';
+      const url=(selectedStudent && selectedStudent.photo) || '';
+      if(url){ const img=document.createElement('img'); img.src=url; img.alt=c.title; img.onerror=()=>{ photoEl.innerHTML='<div class="ph">📷 Photo coming soon</div>'; }; photoEl.appendChild(img); }
+      else { const ph=document.createElement('div'); ph.className='ph'; ph.textContent='📷 Headshot coming soon'; photoEl.appendChild(ph); }
+    } else if(typeof c.img === 'string'){
       photoEl=document.createElement('div'); photoEl.className='wkphoto';
       if(c.img){ const img=document.createElement('img'); img.src=c.img; img.alt=c.title; img.onerror=()=>{ photoEl.innerHTML='<div class="ph">📷 Photo coming soon</div>'; }; photoEl.appendChild(img); }
       else { const ph=document.createElement('div'); ph.className='ph'; ph.textContent='📷 Photo coming soon'; photoEl.appendChild(ph); }
