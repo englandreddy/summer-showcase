@@ -317,19 +317,19 @@ const CONFIG = {
   //   band: "l46" -> Flight School + App Architects      (app link)
   //   loom = Core Skills Loom link   game = Astro Arcade link   app = App Architects link
   students: [
-    { name: "Emerson Rhizor",          band: "k3",  photo: "", loom: "", game: "", app: "" },
-    { name: "Desiree Danziger-Shieh",  band: "k3",  photo: "", loom: "", game: "", app: "" },
-    { name: "Theo Xu",                 band: "k3",  photo: "", loom: "", game: "", app: "" },
-    { name: "Arden Chatham",           band: "k3",  photo: "", loom: "", game: "", app: "" },
-    { name: "Leela Kapoor",            band: "k3",  photo: "", loom: "", game: "", app: "" },
-    { name: "Brewster Conrad",         band: "k3",  photo: "", loom: "", game: "", app: "" },
-    { name: "Alexandra Townsend",      band: "k3",  photo: "", loom: "", game: "", app: "" },
-    { name: "Olivia Xu",               band: "k3",  photo: "", loom: "", game: "", app: "" },
-    { name: "Misha Grbovic",           band: "k3",  photo: "", loom: "", game: "", app: "" },
+    { name: "Emerson Rhizor",          band: "k3",  photo: "headshot-emerson.jpg", loom: "", game: "", app: "" },
+    { name: "Desiree Danziger-Shieh",  band: "k3",  photo: "headshot-desiree.jpg", loom: "", game: "", app: "" },
+    { name: "Theo Xu",                 band: "k3",  photo: "headshot-theo.jpg", loom: "", game: "", app: "" },
+    { name: "Arden Chatham",           band: "k3",  photo: "headshot-arden.jpg", loom: "", game: "", app: "" },
+    { name: "Leela Kapoor",            band: "k3",  photo: "headshot-leela.jpg", loom: "", game: "", app: "" },
+    { name: "Brewster Conrad",         band: "k3",  photo: "headshot-brewster.jpg", loom: "", game: "", app: "" },
+    { name: "Alexandra Townsend",      band: "k3",  photo: "headshot-aly.jpg", loom: "", game: "", app: "" },
+    { name: "Olivia Xu",               band: "k3",  photo: "headshot-olivia.jpg", loom: "", game: "", app: "" },
+    { name: "Misha Grbovic",           band: "k3",  photo: "headshot-misha.jpg", loom: "", game: "", app: "" },
 
-    { name: "Adeline Rhizor",          band: "l46", photo: "", loom: "", game: "", app: "" },
-    { name: "Mourad Khalifa",          band: "l46", photo: "", loom: "", game: "", app: "" },
-    { name: "Dean Danziger-Shieh",     band: "l46", photo: "", loom: "", game: "", app: "" }
+    { name: "Adeline Rhizor",          band: "l46", photo: "headshot-adeline.jpg", loom: "", game: "", app: "" },
+    { name: "Mourad Khalifa",          band: "l46", photo: "headshot-mourad.jpg", loom: "", game: "", app: "" },
+    { name: "Dean Danziger-Shieh",     band: "l46", photo: "headshot-dean.jpg", loom: "", game: "", app: "" }
   ],
 
   // The cards that describe a day at Alpha, one list per band. Each card:
@@ -341,14 +341,14 @@ const CONFIG = {
   //   action: { type:"link", field:"game"|"app", label:"...", btn:"green"|"pink" }
   day: {
     k3: [
-      { emoji:"🚀", title:"Launch", img:"",
+      { emoji:"🚀", title:"Launch", img:"launch.jpg",
         desc:"Every day kicks off with Launch - a quick 15-minute activity that's pure fun and tied to a life skill. This is what gets us ready to tackle a long day of academic and life skill learning." },
-      { emoji:"🎥", title:"Core Skills", img:"",
+      { emoji:"🎥", title:"Core Skills", img:"core-skills.jpg",
         desc:"At Alpha, I do my academics (or core skills) for 2 hours in the morning on a learning platform called TimeBack. With the apps calibrated to my knowledge grade level in each subject, I'm able to work at my own pace and earn XP! Press the play button to watch my Loom, which explains how TimeBack and XP works and which app I enjoyed the most this week.",
         action:{ type:"loom" } },
-      { emoji:"🚑", title:"First Responders", skill:"Grit", img:"",
+      { emoji:"🚑", title:"First Responders", skill:"Grit", img:"first-responders.jpg",
         desc:"Workshops are where we learn real-world skills by doing. This week, we learned grit by training like real first responders - cleaning and suturing wounds step by step. Our Test2Pass for this workshop is to sterilize and suture a cut in a banana in just 10 minutes." },
-      { emoji:"🕹️", title:"Astro Arcade", skill:"Giving and Receiving Feedback", img:"",
+      { emoji:"🕹️", title:"Astro Arcade", skill:"Giving and Receiving Feedback", img:"astro-arcade.jpg",
         desc:"In Astro Arcade, we learned how to create and iterate on our own arcade game using a kid-friendly coding platform called Otter Island from Blastoff! Our Test2Pass in this workshop is to explain to my parents (you!) how my game works and what feedback I used to improve it.",
         action:{ type:"link", field:"game", label:"🚀 Play my game", btn:"green" } },
       { emoji:"📣", title:"Closing — Shoutouts", img:"",
@@ -357,9 +357,9 @@ const CONFIG = {
         desc:"" }
     ],
     l46: [
-      { emoji:"🚀", title:"Launch", img:"",
+      { emoji:"🚀", title:"Launch", img:"launch.jpg",
         desc:"Every day kicks off with Launch - a quick 15-minute activity that's pure fun and tied to a life skill. This is what gets us ready to tackle a long day of academic and life skill learning." },
-      { emoji:"🎥", title:"Core Skills", img:"",
+      { emoji:"🎥", title:"Core Skills", img:"core-skills.jpg",
         desc:"At Alpha, I do my academics (or core skills) for 2 hours in the morning on a learning platform called TimeBack. With the apps calibrated to my knowledge grade level in each subject, I'm able to work at my own pace and earn XP! Press the play button to watch my Loom, which explains how TimeBack and XP works and which app I enjoyed the most this week.",
         action:{ type:"loom" } },
       { emoji:"✈️", title:"Flight School", skill:"Critical Thinking", img:"",
