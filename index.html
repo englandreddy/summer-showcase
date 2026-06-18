@@ -266,7 +266,7 @@
       </div>
       <div class="daymid">
         <div class="badge">
-          <div class="sub">Here's what a day at Alpha looks like.</div>
+          <div class="sub" id="daySub">Here's what a day at Alpha looks like.</div>
         </div>
         <div class="slides" id="slides"></div>
         <div class="slcount" id="slCount"></div>
@@ -392,7 +392,7 @@ let curSlide = 0;
 function buildDay(){
   const band = (selectedStudent && selectedStudent.band) || 'k3';
   const dayCards = (CONFIG.day && CONFIG.day[band]) || [];
-  const intro = { intro:true, emoji:"👋", title:"Hi, I'm "+firstName()+"!", desc:"And this is what my day at Alpha looks like!" };
+  const intro = { intro:true, emoji:"👋", title:"Hi, I'm "+firstName()+"!", desc:"And today, I'm going to show you what a day at Alpha School looks like!" };
   const cards = [intro].concat(dayCards);
   const colors = ['var(--blue)','var(--green)','var(--coral)','var(--pink)','var(--yellow)'];
   const wrap = document.getElementById('slides');
@@ -467,6 +467,7 @@ function showSlide(i){
   if(!els.length) return;
   curSlide = Math.max(0, Math.min(i, els.length-1));
   els.forEach((el,k)=>el.classList.toggle('active', k===curSlide));
+  const sub=document.getElementById('daySub'); if(sub) sub.style.display = (curSlide===0 ? 'none' : '');
   document.querySelectorAll('#slDots .sldot').forEach((d,k)=>d.classList.toggle('on', k===curSlide));
   document.getElementById('slCount').textContent = 'Step ' + (curSlide+1) + ' of ' + els.length;
   document.getElementById('slPrev').disabled = (curSlide===0);
