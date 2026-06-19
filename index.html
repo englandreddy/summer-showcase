@@ -319,7 +319,7 @@ const CONFIG = {
   students: [
     { name: "Emerson Rhizor",          band: "k3",  photo: "headshot-emerson.jpg", loom: "https://www.loom.com/share/4c8690e0a52b4d11a2faafea73ebfb7d", game: "", app: "" },
     { name: "Desiree Danziger-Shieh",  band: "k3",  photo: "headshot-desiree.jpg", loom: "https://www.loom.com/share/f1bb5a8b6049440883ebcdea13e62d75", game: "", app: "" },
-    { name: "Theo Xu",                 band: "k3",  photo: "headshot-theo.jpg", loom: "", game: "", app: "" },
+    { name: "Theo Xu",                 band: "k3",  photo: "headshot-theo.jpg", loom: "https://www.loom.com/share/3fed8b35e00d4e57864a6c48f04638fd", game: "", app: "" },
     { name: "Arden Chatham",           band: "k3",  photo: "headshot-arden.jpg", loom: "https://www.loom.com/share/11dc063778334a32a946ee2320b0be1a", game: "", app: "" },
     { name: "Leela Kapoor",            band: "k3",  photo: "headshot-leela.jpg", loom: "https://www.loom.com/share/373f82d6824d40ba8eec3defe0df452e", game: "", app: "" },
     { name: "Brewster Conrad",         band: "k3",  photo: "headshot-brewster.jpg", loom: "", game: "", app: "" },
@@ -327,9 +327,9 @@ const CONFIG = {
     { name: "Olivia Xu",               band: "k3",  photo: "headshot-olivia.jpg", loom: "https://www.loom.com/share/f29dc6dddf394fcfb085e9e3ed76d0c6", game: "", app: "" },
     { name: "Misha Grbovic",           band: "k3",  photo: "headshot-misha.jpg", loom: "", game: "", app: "" },
 
-    { name: "Adeline Rhizor",          band: "l46", photo: "headshot-adeline.jpg", loom: "https://www.loom.com/share/0992e82236bc4fccbf9c48245aaff99d", game: "", app: "https://medfield.lovable.app/" },
-    { name: "Mourad Khalifa",          band: "l46", photo: "headshot-mourad.jpg", loom: "https://www.loom.com/share/c0e70aecbc93463793ddb3b36adb72ec", game: "", app: "https://ragepunch.lovable.app/" },
-    { name: "Dean Danziger-Shieh",     band: "l46", photo: "headshot-dean.jpg", loom: "https://www.loom.com/share/86af755992754df39f21ab90f05f02fc", game: "", app: "https://moveplanhome.lovable.app/" }
+    { name: "Adeline Rhizor",          band: "l46", photo: "headshot-adeline.jpg", loom: "https://www.loom.com/share/0992e82236bc4fccbf9c48245aaff99d", game: "", app: "https://medfield.lovable.app/", appshot: "appshot-adeline.jpg" },
+    { name: "Mourad Khalifa",          band: "l46", photo: "headshot-mourad.jpg", loom: "https://www.loom.com/share/c0e70aecbc93463793ddb3b36adb72ec", game: "", app: "https://ragepunch.lovable.app/", appshot: "appshot-mourad.jpg" },
+    { name: "Dean Danziger-Shieh",     band: "l46", photo: "headshot-dean.jpg", loom: "https://www.loom.com/share/86af755992754df39f21ab90f05f02fc", game: "", app: "https://moveplanhome.lovable.app/", appshot: "appshot-dean.jpg" }
   ],
 
   // The cards that describe a day at Alpha, one list per band. Each card:
@@ -450,7 +450,8 @@ function buildDay(){
       else { const ph=document.createElement('div'); ph.className='ph'; ph.textContent='📷 Headshot coming soon'; photoEl.appendChild(ph); }
     } else if(typeof c.img === 'string'){
       photoEl=document.createElement('div'); photoEl.className='wkphoto';
-      if(c.img){ const img=document.createElement('img'); img.src=c.img; img.alt=c.title; img.onerror=()=>{ photoEl.innerHTML='<div class="ph">📷 Photo coming soon</div>'; }; photoEl.appendChild(img); }
+      const imgSrc=(c.action && c.action.field==='app' && selectedStudent && selectedStudent.appshot) ? selectedStudent.appshot : c.img;
+      if(imgSrc){ const img=document.createElement('img'); img.src=imgSrc; img.alt=c.title; img.onerror=()=>{ photoEl.innerHTML='<div class="ph">📷 Photo coming soon</div>'; }; photoEl.appendChild(img); }
       else { const ph=document.createElement('div'); ph.className='ph'; ph.textContent='📷 Photo coming soon'; photoEl.appendChild(ph); }
     }
 
