@@ -154,6 +154,13 @@
   .footer .fdot{width:8px; height:8px; background:var(--cream); display:inline-block;}
   .toast{position:fixed; bottom:26px; left:50%; transform:translateX(-50%) translateY(20px); background:var(--blue); color:#fff; border:3px solid var(--ink); padding:14px 22px; border-radius:14px; font-weight:700; box-shadow:var(--shadow-sm); opacity:0; transition:.25s; pointer-events:none; z-index:50;}
   .toast.show{opacity:1; transform:translateX(-50%) translateY(0);}
+
+  /* face slide - big headshot + name so families can spot the computer */
+  .facewrap{display:flex; flex-direction:column; align-items:center; gap:16px; margin-top:8px;}
+  .headshot.big{width:min(420px,82%);}
+  .headshot .initials{font-family:'Fredoka',sans-serif; font-weight:700; font-size:5.5rem; color:#5566e0; letter-spacing:.02em;}
+  .facename{font-family:'Fredoka',sans-serif; font-weight:700; font-size:2.5rem; color:var(--ink); text-align:center; line-height:1.05;}
+  .facecap{font-family:'Inter',sans-serif; font-weight:600; color:#555; font-size:1.08rem; text-align:center; margin:0;}
 </style>
 </head>
 <body>
@@ -266,7 +273,7 @@
         <div class="hero">
           <svg class="logo-hero" role="img" aria-label="Alpha Summer"><use href="#alphaLogo"></use></svg>
           <div class="pill">★ SUMMER SHOWCASE 2026</div>
-          <p class="lead" style="margin-top:18px;">Pick your name to walk your family through your week!</p>
+          <p class="lead" style="margin-top:18px;">Pick your name to start your showcase!</p>
         </div>
         <select id="nameSelect"><option value="">- choose your name -</option></select>
         <div style="height:18px"></div>
@@ -283,7 +290,7 @@
       </div>
       <div class="daymid">
         <div class="badge">
-          <div class="sub" id="daySub">Here's what a day at Alpha looks like.</div>
+          <div class="sub" id="daySub">My Alpha Summer Showcase</div>
         </div>
         <div class="slides" id="slides"></div>
         <div class="slcount" id="slCount"></div>
@@ -310,67 +317,38 @@ const CONFIG = {
   // Opening password (families type this to get in):
   password: "iloveschool",
 
-  // One entry per student.
-  //   band: "k3"  -> First Responders + Astro Arcade   (game link)
-  //   band: "l46" -> Flight School + App Architects      (app link)
-  //   loom = Core Skills Loom link   game = Astro Arcade link   app = App Architects link
+  // ONE ENTRY PER STUDENT - this is the only list you normally edit.
+  //   name  = full name. Shown BIG on the first slide (with the photo) so families
+  //           can match the face to the open computer and find their child's station.
+  //   photo = headshot file in this repo (e.g. "headshot-miles.jpg"). If that file
+  //           isn't uploaded yet, the kid's initials show in the circle automatically -
+  //           so just drop the photo into the repo later with the same filename.
+  //   loom  = TimeBack Loom share link.  "" = shows "coming soon" until you paste it.
+  //   site  = a website / app to show.   "" = no website slide for this kid.
+  //           Paste the App Architects / Greenhouse Engineers link here when ready and
+  //           a "My Project" slide appears automatically (optional siteshot: "file.jpg").
   students: [
-    { name: "Emerson Rhizor",          band: "k3",  photo: "headshot-emerson.jpg", loom: "https://www.loom.com/share/4c8690e0a52b4d11a2faafea73ebfb7d", game: "https://alpha-lls.blastoff.org/preview/8c94adc240e84aae8b295441b9025eb3", app: "" },
-    { name: "Desiree Danziger-Shieh",  band: "k3",  photo: "headshot-desiree.jpg", loom: "https://www.loom.com/share/f1bb5a8b6049440883ebcdea13e62d75", game: "https://alpha-lls.blastoff.org/preview/74899a2b8ce04f688d8256818fb04626", app: "" },
-    { name: "Theo Xu",                 band: "k3",  photo: "headshot-theo.jpg", loom: "https://www.loom.com/share/3fed8b35e00d4e57864a6c48f04638fd", game: "https://alpha-lls.blastoff.org/preview/6a40439ed99e40f1bd19027a43ab1dad", app: "" },
-    { name: "Arden Chatham",           band: "k3",  photo: "headshot-arden.jpg", loom: "https://www.loom.com/share/11dc063778334a32a946ee2320b0be1a", game: "https://alpha-lls.blastoff.org/preview/6688ca7c8f644afdbc21c8ed35ad5072", app: "" },
-    { name: "Leela Kapoor",            band: "k3",  photo: "headshot-leela.jpg", loom: "https://www.loom.com/share/373f82d6824d40ba8eec3defe0df452e", game: "https://alpha-lls.blastoff.org/preview/165fd573f06b469384475a11cab16dd3", app: "" },
-    { name: "Brewster Conrad",         band: "k3",  photo: "headshot-brewster.jpg", loom: "https://www.loom.com/share/73b31b9631424cdcb301bf649ce7a8e9", game: "https://alpha-lls.blastoff.org/preview/d266c27655fd447facfb10386d6364f7", app: "" },
-    { name: "Alexandra Townsend",      band: "k3",  photo: "headshot-aly.jpg", loom: "https://www.loom.com/share/01758c62c6dc4e7a884ab3f07ea11287", game: "https://alpha-lls.blastoff.org/preview/43c16f518424468e9dabada9d11d6074", app: "" },
-    { name: "Olivia Xu",               band: "k3",  photo: "headshot-olivia.jpg", loom: "https://www.loom.com/share/f29dc6dddf394fcfb085e9e3ed76d0c6", game: "https://alpha-lls.blastoff.org/preview/6e0d8a2a45c74a659a8de63eac940575", app: "" },
-    { name: "Misha Grbovic",           band: "k3",  photo: "headshot-misha.jpg", loom: "https://www.loom.com/share/26f1ce27d7644525b4c9a651a8c96b09", game: "https://alpha-lls.blastoff.org/preview/376fe7a124ac4ae8878a5daaa973ed98", app: "" },
+    { name: "Olivia Gilbert",    photo: "headshot-olivia-gilbert.jpg", loom: "https://www.loom.com/share/74a7d77b572f4f01938b005ff02bea4b", site: "" },
+    { name: "Miles Kremer",      photo: "headshot-miles.jpg",          loom: "https://www.loom.com/share/8638c717c42041a6b4bc788fe1dec00f", site: "" },
+    { name: "Aly Townsend",      photo: "headshot-aly.jpg",            loom: "https://www.loom.com/share/59027c55e0384950aab74010ace8c647", site: "" },
+    { name: "Arden Chatham",     photo: "headshot-arden.jpg",          loom: "https://www.loom.com/share/994f4d9521824568a92c12a669d81409", site: "" },
+    { name: "Cooper deWilde",    photo: "headshot-cooper.jpg",         loom: "", site: "" },
+    { name: "Calvin Quasha",     photo: "headshot-calvin.jpg",         loom: "https://www.loom.com/share/0a667dfb39514a9aad307ff05afc3d3f", site: "" },
+    { name: "Truman Chatham",    photo: "headshot-truman.jpg",         loom: "https://www.loom.com/share/ce8de64673574b07a7a67ed07358f648", site: "" },
+    { name: "Vivienne Chappell", photo: "headshot-vivienne.jpg",       loom: "https://www.loom.com/share/da3588a887e94e4d9ed7f9e7e919aab1", site: "" },
 
-    { name: "Adeline Rhizor",          band: "l46", photo: "headshot-adeline.jpg", loom: "https://www.loom.com/share/0992e82236bc4fccbf9c48245aaff99d", game: "", app: "https://medfield.lovable.app/", appshot: "appshot-adeline.jpg" },
-    { name: "Mourad Khalifa",          band: "l46", photo: "headshot-mourad.jpg", loom: "https://www.loom.com/share/c0e70aecbc93463793ddb3b36adb72ec", game: "", app: "https://ragepunch.lovable.app/", appshot: "appshot-mourad.jpg" },
-    { name: "Dean Danziger-Shieh",     band: "l46", photo: "headshot-dean.jpg", loom: "https://www.loom.com/share/86af755992754df39f21ab90f05f02fc", game: "", app: "https://moveplanhome.lovable.app/", appshot: "appshot-dean.jpg" }
-  ],
+    // App Architects - paste each kid's app link into "site" when ready (tomorrow):
+    { name: "Austin Morin",      photo: "headshot-austin.jpg",         loom: "", site: "" },
+    { name: "Patrick Rahn",      photo: "headshot-patrick.jpg",        loom: "https://www.loom.com/share/ddabe7eade6b4d098df3d07343f74169", site: "" },
+    { name: "Zane Adarkar",      photo: "headshot-zane.jpg",           loom: "https://www.loom.com/share/8f88decf75134137bae70713a9c35baf", site: "" },
+    { name: "Zeming Yin",        photo: "headshot-zeming.jpg",         loom: "https://www.loom.com/share/386815e8da594c6d811859c69e0f2c12", site: "" },
 
-  // The cards that describe a day at Alpha, one list per band. Each card:
-  //   { emoji, title, desc }
-  // Optional add-ons on a card:
-  //   skill: "Grit"               -> a yellow "life skill" chip in the header
-  //   img: ""                     -> a photo box (paste a photo URL; "" = placeholder)
-  //   action: { type:"loom" }     -> a "Watch my Loom" button (uses the kid's loom link)
-  //   action: { type:"link", field:"game"|"app", label:"...", btn:"green"|"pink" }
-  day: {
-    k3: [
-      { emoji:"🚀", title:"Launch", img:"launch.jpg",
-        desc:"Every day kicks off with Launch - a quick 15-minute activity that's pure fun and tied to a life skill. This is what gets us ready to tackle a long day of academic and life skill learning." },
-      { emoji:"🎥", title:"Core Skills", img:"core-skills.jpg",
-        desc:"At Alpha, I do my academics (or core skills) for 2 hours in the morning on a learning platform called TimeBack. With the apps calibrated to my knowledge grade level in each subject, I'm able to work at my own pace and earn XP! Press the play button to watch my Loom, which explains how TimeBack and XP works and which app I enjoyed the most this week.",
-        action:{ type:"loom" } },
-      { emoji:"🚑", title:"First Responders", skill:"Grit", img:"first-responders.jpg",
-        desc:"Workshops are where we learn real-world skills by doing. This week, we learned grit by training like real first responders - cleaning and suturing wounds step by step. Our Test2Pass for this workshop is to sterilize and suture a cut in a banana in just 10 minutes." },
-      { emoji:"🕹️", title:"Astro Arcade", skill:"Giving and Receiving Feedback", img:"astro-arcade.jpg",
-        desc:"In Astro Arcade, we learned how to create and iterate on our own arcade game using a kid-friendly coding platform called Otter Island from Blastoff! Our Test2Pass in this workshop is to explain to my parents (you!) how my game works and what feedback I used to improve it.",
-        action:{ type:"link", field:"game", label:"🚀 Play my game", btn:"green" } },
-      { emoji:"📣", title:"Closing — Shoutouts", img:"closing.jpg",
-        desc:"Everyday, we end with a short closing where students can give each other shoutouts for showing different life skills throughout the day. It's important that each shoutout has 3 important elements - the classmate I'm shouting out, the life skill they showed, and a specific example of how they showed that life skill." },
-      { emoji:"💙", title:"Thank You!", img:"thankyou.jpg",
-        desc:"" }
-    ],
-    l46: [
-      { emoji:"🚀", title:"Launch", img:"launch.jpg",
-        desc:"Every day kicks off with Launch - a quick 15-minute activity that's pure fun and tied to a life skill. This is what gets us ready to tackle a long day of academic and life skill learning." },
-      { emoji:"🎥", title:"Core Skills", img:"core-skills.jpg",
-        desc:"At Alpha, I do my academics (or core skills) for 2 hours in the morning on a learning platform called TimeBack. With the apps calibrated to my knowledge grade level in each subject, I'm able to work at my own pace and earn XP! Press the play button to watch my Loom, which explains how TimeBack and XP works and which app I enjoyed the most this week.",
-        action:{ type:"loom" } },
-      { emoji:"✈️", title:"Flight School", skill:"Critical Thinking", img:"flight-school.jpg",
-        desc:"Workshops are where we learn real-world skills by doing. This week, we practiced critical thinking by flying and maneuvering drones, building obstacle courses as a team, and using code blocks to program an autonomous flight path. Our Test2Pass for this workshop is to showcase our drone's autonomous flight course that we coded together as a team." },
-      { emoji:"📱", title:"App Architects", skill:"Giving and Receiving Feedback", img:"",
-        desc:"In App Architects, we learned to vibe code and ship a working app on Lovable, while practicing giving, receiving, and implementing feedback to make my app better. Our Test2Pass for this workshop is to explain to my parents (you!) how my app works, the problem that it solves, and the feedback I used to improve it.",
-        action:{ type:"link", field:"app", label:"📱 Open my app", btn:"pink" } },
-      { emoji:"📣", title:"Closing — Shoutouts", img:"closing.jpg",
-        desc:"Everyday, we end with a short closing where students can give each other shoutouts for showing different life skills throughout the day. It's important that each shoutout has 3 important elements - the classmate I'm shouting out, the life skill they showed, and a specific example of how they showed that life skill." },
-      { emoji:"💙", title:"Thank You!", img:"thankyou.jpg",
-        desc:"" }
-    ]
-  }
+    // Greenhouse Engineers - paste each kid's link into "site" when ready (tomorrow):
+    { name: "Ansel Morin",       photo: "headshot-ansel.jpg",          loom: "", site: "" },
+    { name: "Soleste Chen",      photo: "headshot-soleste.jpg",        loom: "https://www.loom.com/share/da48820d47d84fd6b25296d04f16ed19", site: "" },
+    { name: "Zebin Yin",         photo: "headshot-zebin.jpg",          loom: "https://www.loom.com/share/35b096b70bd74323a1d3d76e971f07f9", site: "" },
+    { name: "Ethan Mezhvinsky",  photo: "headshot-ethan.jpg",          loom: "https://www.loom.com/share/fa6aa2624a054d30a03a9c734f86726e", site: "" }
+  ]
 };
 /* ============================================================
    (You usually do not need to edit below here.)
@@ -419,75 +397,93 @@ function loomEmbed(url){
 }
 
 let curSlide = 0;
+
+function initials(name){
+  if(!name) return '';
+  const p = name.trim().split(/\s+/);
+  const a = p[0] ? p[0][0] : '';
+  const b = p.length>1 ? p[p.length-1][0] : '';
+  return (a+b).toUpperCase();
+}
+
+function cardHead(emoji, title, color){
+  const head=document.createElement('div'); head.className='dhead';
+  const em=document.createElement('div'); em.className='demoji'; em.style.background=color; em.textContent=emoji;
+  const h=document.createElement('h3'); h.textContent=title;
+  head.appendChild(em); head.appendChild(h);
+  return head;
+}
+
+// Each student gets: a FACE slide (photo + name), a LOOM slide, and a WEBSITE
+// slide if they have a "site" link. That's it - nice and simple for families.
 function buildDay(){
-  const band = (selectedStudent && selectedStudent.band) || 'k3';
-  const dayCards = (CONFIG.day && CONFIG.day[band]) || [];
-  const intro = { intro:true, emoji:"👋", title:"Hi, I'm "+firstName()+"!", desc:"And today, I'm going to show you what a day at Alpha School looks like!" };
-  const cards = [intro].concat(dayCards);
-  const colors = ['var(--blue)','var(--green)','var(--coral)','var(--pink)','var(--yellow)'];
+  const s = selectedStudent;
+  const C = { blue:'var(--blue)', green:'var(--green)', coral:'var(--coral)', pink:'var(--pink)' };
+  const slides = [{ kind:'face' }, { kind:'loom' }];
+  if(s && s.site) slides.push({ kind:'site' });
+
   const wrap = document.getElementById('slides');
   const dots = document.getElementById('slDots');
   wrap.innerHTML = ''; dots.innerHTML = '';
-  cards.forEach((c,i)=>{
+
+  slides.forEach((c,i)=>{
     const card=document.createElement('div'); card.className='daycard slide';
 
-    const head=document.createElement('div'); head.className='dhead';
-    const em=document.createElement('div'); em.className='demoji'; em.style.background=colors[i % colors.length]; em.textContent=c.emoji;
-    const h=document.createElement('h3'); h.textContent=c.title;
-    head.appendChild(em); head.appendChild(h);
-    if(c.skill){ const chip=document.createElement('span'); chip.className='skillchip'; chip.textContent='🌟 '+c.skill; head.appendChild(chip); }
-    card.appendChild(head);
-
-    if(c.desc){ const p=document.createElement('p'); p.textContent=c.desc; card.appendChild(p); }
-
-    let photoEl=null;
-    if(c.intro){
-      photoEl=document.createElement('div'); photoEl.className='headshot';
-      const url=(selectedStudent && selectedStudent.photo) || '';
-      if(url){ const img=document.createElement('img'); img.src=url; img.alt=c.title; img.onerror=()=>{ photoEl.innerHTML='<div class="ph">📷 Photo coming soon</div>'; }; photoEl.appendChild(img); }
-      else { const ph=document.createElement('div'); ph.className='ph'; ph.textContent='📷 Headshot coming soon'; photoEl.appendChild(ph); }
-    } else if(typeof c.img === 'string'){
-      photoEl=document.createElement('div'); photoEl.className='wkphoto';
-      const imgSrc=(c.action && c.action.field==='app' && selectedStudent && selectedStudent.appshot) ? selectedStudent.appshot : c.img;
-      if(imgSrc){ const img=document.createElement('img'); img.src=imgSrc; img.alt=c.title; img.onerror=()=>{ photoEl.innerHTML='<div class="ph">📷 Photo coming soon</div>'; }; photoEl.appendChild(img); }
-      else { const ph=document.createElement('div'); ph.className='ph'; ph.textContent='📷 Photo coming soon'; photoEl.appendChild(ph); }
-    }
-
-    let actionEl=null, isLoom=false;
-    if(c.action){
-      const a=c.action;
-      if(a.type==='loom'){
-        isLoom=true;
-        actionEl=document.createElement('div'); actionEl.className='videobox';
-        const embed=loomEmbed(selectedStudent && selectedStudent.loom);
-        if(embed){
-          const f=document.createElement('iframe'); f.src=embed;
-          f.allow='autoplay; fullscreen; picture-in-picture'; f.allowFullscreen=true; actionEl.appendChild(f);
-        } else {
-          const ph=document.createElement('div'); ph.className='ph'; ph.textContent='🎥 Loom coming soon - add the link in the CONFIG.'; actionEl.appendChild(ph);
-        }
-      } else if(a.type==='link'){
-        const url=(selectedStudent && selectedStudent[a.field]) || '';
-        actionEl=document.createElement('button'); actionEl.className=('btn '+(a.btn||'green')).trim();
-        if(url){ actionEl.textContent=a.label||'Open'; actionEl.onclick=()=>openExternal(url); }
-        else { actionEl.textContent=(a.label||'Open')+' (coming soon)'; actionEl.disabled=true; }
+    if(c.kind==='face'){
+      card.appendChild(cardHead('👋', "Hi, I'm "+firstName()+"!", C.blue));
+      const face=document.createElement('div'); face.className='facewrap';
+      const hs=document.createElement('div'); hs.className='headshot big';
+      const url=(s && s.photo) || '';
+      if(url){
+        const img=document.createElement('img'); img.src=url; img.alt=s.name;
+        img.onerror=()=>{ hs.innerHTML='<div class="initials">'+initials(s.name)+'</div>'; };
+        hs.appendChild(img);
+      } else {
+        hs.innerHTML='<div class="initials">'+initials(s.name)+'</div>';
       }
+      face.appendChild(hs);
+      const nm=document.createElement('div'); nm.className='facename'; nm.textContent=s.name; face.appendChild(nm);
+      const cap=document.createElement('p'); cap.className='facecap'; cap.textContent='This is my computer — welcome to my showcase!'; face.appendChild(cap);
+      card.appendChild(face);
     }
 
-    const stage=document.createElement('div'); stage.className='stage';
-    let trailingBtn=null;
-    if(isLoom && photoEl){ stage.classList.add('two'); stage.appendChild(photoEl); stage.appendChild(actionEl); }
-    else if(photoEl && actionEl){ stage.appendChild(photoEl); trailingBtn=actionEl; }
-    else if(photoEl){ stage.appendChild(photoEl); }
-    else if(actionEl && isLoom){ stage.appendChild(actionEl); }
-    else if(actionEl){ trailingBtn=actionEl; }
-    if(stage.childNodes.length) card.appendChild(stage);
-    if(trailingBtn) card.appendChild(trailingBtn);
+    else if(c.kind==='loom'){
+      card.appendChild(cardHead('🎥', 'My TimeBack', C.green));
+      const p=document.createElement('p');
+      p.textContent="Press play to watch my Loom. I explain how I learn my core skills on TimeBack, how I earn XP, and which app I liked the most this week.";
+      card.appendChild(p);
+      const box=document.createElement('div'); box.className='videobox';
+      const embed=loomEmbed(s && s.loom);
+      if(embed){
+        const f=document.createElement('iframe'); f.src=embed;
+        f.allow='autoplay; fullscreen; picture-in-picture'; f.allowFullscreen=true; box.appendChild(f);
+      } else {
+        const ph=document.createElement('div'); ph.className='ph'; ph.textContent='🎥 My Loom is coming soon!'; box.appendChild(ph);
+      }
+      const stage=document.createElement('div'); stage.className='stage'; stage.appendChild(box);
+      card.appendChild(stage);
+    }
+
+    else if(c.kind==='site'){
+      card.appendChild(cardHead('🌐', 'My Project', C.coral));
+      const p=document.createElement('p');
+      p.textContent="I built this in my workshop! Tap the button to open it and I'll walk you through how it works.";
+      card.appendChild(p);
+      if(s.siteshot){
+        const ph=document.createElement('div'); ph.className='wkphoto';
+        const img=document.createElement('img'); img.src=s.siteshot; img.alt='My project';
+        img.onerror=()=>{ ph.innerHTML='<div class="ph">🌐 Open my project below</div>'; };
+        ph.appendChild(img); card.appendChild(ph);
+      }
+      const btn=document.createElement('button'); btn.className='btn pink';
+      btn.textContent='🌐 Open my website'; btn.onclick=()=>openExternal(s.site);
+      card.appendChild(btn);
+    }
 
     wrap.appendChild(card);
 
     const dot=document.createElement('button'); dot.className='sldot';
-    dot.setAttribute('aria-label','Go to step '+(i+1)); dot.onclick=()=>showSlide(i);
+    dot.setAttribute('aria-label','Go to slide '+(i+1)); dot.onclick=()=>showSlide(i);
     dots.appendChild(dot);
   });
   showSlide(0);
