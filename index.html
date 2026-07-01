@@ -318,36 +318,26 @@ const CONFIG = {
   password: "iloveschool",
 
   // ONE ENTRY PER STUDENT - this is the only list you normally edit.
-  //   name  = full name. Shown BIG on the first slide (with the photo) so families
-  //           can match the face to the open computer and find their child's station.
-  //   photo = headshot file in this repo (e.g. "headshot-miles.jpg"). If that file
+  //   name  = the name shown on the dropdown and BIG on the first slide (with the
+  //           photo) so families can find the open computer. Use first names only,
+  //           adding a last initial when two kids share a first name (e.g. Olivia G / Olivia X).
+  //   photo = headshot file in this repo (e.g. "headshot-theo.jpg"). If that file
   //           isn't uploaded yet, the kid's initials show in the circle automatically -
   //           so just drop the photo into the repo later with the same filename.
   //   loom  = TimeBack Loom share link.  "" = shows "coming soon" until you paste it.
   //   site  = a website / app to show.   "" = no website slide for this kid.
-  //           Paste the App Architects / Greenhouse Engineers link here when ready and
-  //           a "My Project" slide appears automatically (optional siteshot: "file.jpg").
+  //           Paste the link here when ready and a "My Project" slide appears
+  //           automatically (optional siteshot: "file.jpg").
   students: [
-    { name: "Olivia Gilbert",    photo: "headshot-olivia-gilbert.jpg", loom: "https://www.loom.com/share/74a7d77b572f4f01938b005ff02bea4b", site: "" },
-    { name: "Miles Kremer",      photo: "headshot-miles.jpg",          loom: "https://www.loom.com/share/8638c717c42041a6b4bc788fe1dec00f", site: "https://plaintain-menu-tool.lovable.app/" },
-    { name: "Aly Townsend",      photo: "headshot-aly.jpg",            loom: "https://www.loom.com/share/59027c55e0384950aab74010ace8c647", site: "" },
-    { name: "Arden Chatham",     photo: "headshot-arden.jpg",          loom: "https://www.loom.com/share/994f4d9521824568a92c12a669d81409", site: "" },
-    { name: "Cooper deWilde",    photo: "headshot-cooper.jpg",         loom: "https://www.loom.com/share/c16beb3b1cc74becb430bbfbe6a1d46b", site: "" },
-    { name: "Calvin Quasha",     photo: "headshot-calvin.jpg",         loom: "https://www.loom.com/share/0a667dfb39514a9aad307ff05afc3d3f", site: "" },
-    { name: "Truman Chatham",    photo: "headshot-truman.jpg",         loom: "https://www.loom.com/share/ce8de64673574b07a7a67ed07358f648", site: "" },
-    { name: "Vivienne Chappell", photo: "headshot-vivienne.jpg",       loom: "https://www.loom.com/share/da3588a887e94e4d9ed7f9e7e919aab1", site: "" },
-
-    // App Architects - paste each kid's app link into "site" when ready (tomorrow):
-    { name: "Austin Morin",      photo: "headshot-austin.jpg",         loom: "https://www.loom.com/share/9b5f0482d17d42e194b9cdedebc6ef6f", site: "https://build-my-dream-app-231.lovable.app/" },
-    { name: "Patrick Rahn",      photo: "headshot-patrick.jpg",        loom: "https://www.loom.com/share/ddabe7eade6b4d098df3d07343f74169", site: "https://trigame.lovable.app/" },
-    { name: "Zane Adarkar",      photo: "headshot-zane.jpg",           loom: "https://www.loom.com/share/8f88decf75134137bae70713a9c35baf", site: "https://petro-foodie-finder.lovable.app/" },
-    { name: "Zeming Yin",        photo: "headshot-zeming.jpg",         loom: "https://www.loom.com/share/386815e8da594c6d811859c69e0f2c12", site: "https://journal-wander-muse.lovable.app/" },
-
-    // Greenhouse Engineers - no website links (these kids have no "site" slide):
-    { name: "Ansel Morin",       photo: "headshot-ansel.jpg",          loom: "https://www.loom.com/share/6a4945aafb734746a4756e7779695a1f", site: "" },
-    { name: "Soleste Chen",      photo: "headshot-soleste.jpg",        loom: "https://www.loom.com/share/da48820d47d84fd6b25296d04f16ed19", site: "" },
-    { name: "Zebin Yin",         photo: "headshot-zebin.jpg",          loom: "https://www.loom.com/share/35b096b70bd74323a1d3d76e971f07f9", site: "" },
-    { name: "Ethan Mezhvinsky",  photo: "headshot-ethan.jpg",          loom: "https://www.loom.com/share/fa6aa2624a054d30a03a9c734f86726e", site: "" }
+    { name: "Olivia G", photo: "headshot-olivia-gilbert.jpg", loom: "", site: "" },
+    { name: "Aly",      photo: "headshot-aly.jpg",            loom: "", site: "" },
+    { name: "Elias",    photo: "headshot-elias.jpg",          loom: "", site: "" },
+    { name: "Theo",     photo: "headshot-theo.jpg",           loom: "", site: "" },
+    { name: "Jackson",  photo: "headshot-jackson.jpg",        loom: "", site: "" },
+    { name: "Griffin",  photo: "headshot-griffin.jpg",        loom: "", site: "" },
+    { name: "Olivia X", photo: "headshot-olivia.jpg",         loom: "", site: "" },
+    { name: "Tilden",   photo: "headshot-tilden.jpg",         loom: "", site: "" },
+    { name: "Avery",    photo: "headshot-avery.jpg",          loom: "", site: "" }
   ]
 };
 /* ============================================================
@@ -401,9 +391,8 @@ let curSlide = 0;
 function initials(name){
   if(!name) return '';
   const p = name.trim().split(/\s+/);
-  const a = p[0] ? p[0][0] : '';
-  const b = p.length>1 ? p[p.length-1][0] : '';
-  return (a+b).toUpperCase();
+  if(p.length===1) return p[0].slice(0,2).toUpperCase();
+  return (p[0][0]+p[p.length-1][0]).toUpperCase();
 }
 
 function cardHead(emoji, title, color){
