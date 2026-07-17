@@ -362,7 +362,7 @@ const CONFIG = {
     { name: "Ace",       photo: "headshot-ace.jpg",         loom: "https://www.loom.com/share/c44de09ef3894505a5d55981480e4497", site: "", expert: { dedicateTo:"Mom", dedicateSkill:"taking care of me", photo:"chair-ace.jpg" } },
     { name: "Theo",      photo: "headshot-theo.jpg",        loom: "https://www.loom.com/share/da377a65865b4b06bbf7c6272f527fa5", site: "", expert: { dedicateTo:"Olivia", dedicateSkill:"math", photo:"chair-theo.jpg" } },
     { name: "Zian",      photo: "headshot-zian.jpg",        loom: "https://www.loom.com/share/900ccface8b949e196bd94fdf0b145a5", site: "", expert: { dedicateTo:"mom", dedicateSkill:"taking care of me", photo:"chair-zian.jpg" } },
-    { name: "Kyra",      photo: "headshot-kyra.jpg",        loom: "", site: "" }
+    { name: "Kyra",      photo: "headshot-kyra.jpg",        loom: "", site: "", noLoom: true }
   ]
 };
 /* ============================================================
@@ -433,7 +433,8 @@ function cardHead(emoji, title, color){
 function buildDay(){
   const s = selectedStudent;
   const C = { blue:'var(--blue)', green:'var(--green)', coral:'var(--coral)', pink:'var(--pink)' };
-  const slides = [{ kind:'face' }, { kind:'loom' }];
+  const slides = [{ kind:'face' }];
+  if(!(s && s.noLoom)) slides.push({ kind:'loom' });
   if(s && s.expert) slides.push({ kind:'expert' });
   if(s && s.site) slides.push({ kind:'site' });
 
