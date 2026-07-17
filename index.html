@@ -174,6 +174,15 @@
     .expertphoto{flex:none; width:min(420px,92%); max-width:92%;}
     .daycard .expertded{text-align:center; font-size:2rem;}
   }
+
+  /* always-visible left/right navigation arrows (no scrolling needed) */
+  .sidenav{position:fixed; top:50%; transform:translateY(-50%); z-index:60; width:66px; height:66px; border-radius:50%; border:3px solid var(--ink); background:var(--blue); color:#fff; font-family:'Fredoka',sans-serif; font-weight:700; font-size:2.6rem; line-height:1; display:flex; align-items:center; justify-content:center; box-shadow:var(--shadow-sm); cursor:pointer; padding:0 0 6px;}
+  .sidenav.prev{left:16px;}
+  .sidenav.next{right:16px;}
+  .sidenav[disabled]{opacity:.3; cursor:default; pointer-events:none;}
+  .sidenav:hover{transform:translateY(-50%) translateY(-2px);}
+  .sidenav:active{transform:translateY(-50%) scale(.93);}
+  @media(max-width:600px){ .sidenav{width:52px; height:52px; font-size:2.1rem;} .sidenav.prev{left:6px;} .sidenav.next{right:6px;} }
 </style>
 </head>
 <body>
@@ -296,6 +305,8 @@
   </section>
 
   <section id="screen-day" class="screen">
+    <button class="sidenav prev" id="sidePrev" onclick="slide(-1)" aria-label="Back">&#8249;</button>
+    <button class="sidenav next" id="sideNext" onclick="slide(1)" aria-label="Next">&#8250;</button>
     <div class="card full">
       <div class="brandbar">
         <svg class="logo-sm" role="img" aria-label="Alpha Summer"><use href="#alphaLogo"></use></svg>
@@ -530,6 +541,7 @@ function showSlide(i){
   document.querySelectorAll('#slDots .sldot').forEach((d,k)=>d.classList.toggle('on', k===curSlide));
   document.getElementById('slCount').textContent = 'Step ' + (curSlide+1) + ' of ' + els.length;
   document.getElementById('slPrev').disabled = (curSlide===0);
+  var _sp=document.getElementById('sidePrev'); if(_sp) _sp.disabled = (curSlide===0);
   document.getElementById('slNext').textContent = (curSlide===els.length-1) ? '↺ Start over' : 'Next →';
   window.scrollTo(0,0);
 }
