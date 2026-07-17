@@ -163,11 +163,17 @@
   .facecap{font-family:'Inter',sans-serif; font-weight:600; color:#555; font-size:1.08rem; text-align:center; margin:0;}
 
   /* expert slide (LL/L1): "I became an expert in ___" + photo + dedication */
-  .expertline{font-family:'Fredoka',sans-serif; font-weight:700; font-size:1.55rem; color:var(--blue); text-align:center; margin:.1em 0 .7em;}
-  .expertphoto{width:min(460px,90%); margin:0 auto; border:3px solid var(--ink); border-radius:16px; overflow:hidden; box-shadow:var(--shadow-sm); background:#eef0ff;}
+  .expertline{font-family:'Fredoka',sans-serif; font-weight:700; font-size:1.55rem; color:var(--blue); text-align:center; margin:.1em 0 .9em;}
+  .expertstage{display:flex; gap:24px; align-items:center; width:100%; max-width:940px; margin:0 auto;}
+  .expertphoto{flex:0 0 42%; max-width:42%; border:3px solid var(--ink); border-radius:16px; overflow:hidden; box-shadow:var(--shadow); background:#eef0ff;}
   .expertphoto img{width:100%; height:auto; display:block;}
   .expertphoto .ph{font-family:'Fredoka',sans-serif; font-weight:600; color:#9aa3d8; text-align:center; padding:48px 12px;}
-  .expertded{font-family:'Fredoka',sans-serif; font-weight:600; font-size:1.18rem; color:var(--ink); text-align:center; margin:.9em auto 0; max-width:560px; line-height:1.4;}
+  .expertded{flex:1; font-family:'Fredoka',sans-serif; font-weight:700; font-size:1.85rem; color:var(--ink); text-align:left; line-height:1.32; margin:0;}
+  @media(max-width:600px){
+    .expertstage{flex-direction:column; gap:16px;}
+    .expertphoto{flex:none; width:min(420px,92%); max-width:92%;}
+    .expertded{text-align:center; font-size:1.5rem;}
+  }
 </style>
 </head>
 <body>
@@ -483,10 +489,11 @@ function buildDay(){
       } else {
         box.innerHTML='<div class="ph">📷 Photo coming soon</div>';
       }
-      card.appendChild(box);
       const ded=document.createElement('p'); ded.className='expertded';
       ded.textContent = "I dedicate my " + project + " to " + (ex.dedicateTo || '____') + " for being an expert in " + (ex.dedicateSkill || '____') + ".";
-      card.appendChild(ded);
+      const estage=document.createElement('div'); estage.className='expertstage';
+      estage.appendChild(box); estage.appendChild(ded);
+      card.appendChild(estage);
     }
 
     else if(c.kind==='site'){
