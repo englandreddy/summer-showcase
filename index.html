@@ -161,6 +161,13 @@
   .headshot .initials{font-family:'Fredoka',sans-serif; font-weight:700; font-size:5.5rem; color:#5566e0; letter-spacing:.02em;}
   .facename{font-family:'Fredoka',sans-serif; font-weight:700; font-size:2.5rem; color:var(--ink); text-align:center; line-height:1.05;}
   .facecap{font-family:'Inter',sans-serif; font-weight:600; color:#555; font-size:1.08rem; text-align:center; margin:0;}
+
+  /* expert slide (LL/L1): "I became an expert in ___" + photo + dedication */
+  .expertline{font-family:'Fredoka',sans-serif; font-weight:700; font-size:1.55rem; color:var(--blue); text-align:center; margin:.1em 0 .7em;}
+  .expertphoto{width:min(460px,90%); margin:0 auto; border:3px solid var(--ink); border-radius:16px; overflow:hidden; box-shadow:var(--shadow-sm); background:#eef0ff;}
+  .expertphoto img{width:100%; height:auto; display:block;}
+  .expertphoto .ph{font-family:'Fredoka',sans-serif; font-weight:600; color:#9aa3d8; text-align:center; padding:48px 12px;}
+  .expertded{font-family:'Fredoka',sans-serif; font-weight:600; font-size:1.18rem; color:var(--ink); text-align:center; margin:.9em auto 0; max-width:560px; line-height:1.4;}
 </style>
 </head>
 <body>
@@ -329,20 +336,20 @@ const CONFIG = {
   //           Paste the link here when ready and a "My Project" slide appears
   //           automatically (optional siteshot: "file.jpg").
   students: [
-    { name: "Aly",       photo: "headshot-aly.jpg",         loom: "", site: "" },
-    { name: "Nicolas",   photo: "headshot-nicolas.jpg",     loom: "", site: "" },
-    { name: "Samuel",    photo: "headshot-samuel.jpg",      loom: "", site: "" },
-    { name: "Corinne",   photo: "headshot-corinne.jpg",     loom: "", site: "" },
+    { name: "Aly",       photo: "headshot-aly.jpg",         loom: "", site: "", expert: { dedicateTo:"Mommy", dedicateSkill:"making chairs", photo:"chair-aly.jpg" } },
+    { name: "Nico",      photo: "headshot-nicolas.jpg",     loom: "", site: "", expert: { dedicateTo:"Uncle David", dedicateSkill:"cooking for people that are sick", photo:"chair-nico.jpg" } },
+    { name: "Samuel",    photo: "headshot-samuel.jpg",      loom: "", site: "", expert: { dedicateTo:"dad", dedicateSkill:"science", photo:"chair-samuel.jpg" } },
+    { name: "Cori",      photo: "headshot-corinne.jpg",     loom: "", site: "", expert: { dedicateTo:"my brother", dedicateSkill:"dinosaurs and trucks", photo:"chair-cori.jpg" } },
     { name: "Amelia",    photo: "headshot-amelia.jpg",      loom: "", site: "" },
     { name: "Sebastian", photo: "headshot-sebastian.jpg",   loom: "", site: "" },
     { name: "Allison",   photo: "headshot-allison.jpg",     loom: "", site: "" },
     { name: "Bronson",   photo: "headshot-bronson.jpg",     loom: "", site: "" },
     { name: "Minghan",   photo: "headshot-minghan.jpg",     loom: "", site: "" },
-    { name: "India",     photo: "headshot-india.jpg",       loom: "", site: "" },
-    { name: "Hugh",      photo: "headshot-hugh.jpg",        loom: "", site: "" },
-    { name: "Ace",       photo: "headshot-ace.jpg",         loom: "", site: "" },
-    { name: "Theo",      photo: "headshot-theo.jpg",        loom: "", site: "" },
-    { name: "Zian",      photo: "headshot-zian.jpg",        loom: "", site: "" }
+    { name: "India",     photo: "headshot-india.jpg",       loom: "", site: "", expert: { dedicateTo:"dad", dedicateSkill:"working so hard at trying to be really helpful and making breakfast", photo:"chair-india.jpg" } },
+    { name: "Hugh",      photo: "headshot-hugh.jpg",        loom: "", site: "", expert: { dedicateTo:"dad", dedicateSkill:"working so hard at trying to be really helpful and making breakfast", photo:"chair-hugh.jpg" } },
+    { name: "Ace",       photo: "headshot-ace.jpg",         loom: "", site: "", expert: { dedicateTo:"Mom", dedicateSkill:"taking care of me", photo:"chair-ace.jpg" } },
+    { name: "Theo",      photo: "headshot-theo.jpg",        loom: "", site: "", expert: { dedicateTo:"Olivia", dedicateSkill:"math", photo:"chair-theo.jpg" } },
+    { name: "Zian",      photo: "headshot-zian.jpg",        loom: "", site: "", expert: { dedicateTo:"mom", dedicateSkill:"taking care of me", photo:"chair-zian.jpg" } }
   ]
 };
 /* ============================================================
@@ -414,6 +421,7 @@ function buildDay(){
   const s = selectedStudent;
   const C = { blue:'var(--blue)', green:'var(--green)', coral:'var(--coral)', pink:'var(--pink)' };
   const slides = [{ kind:'face' }, { kind:'loom' }];
+  if(s && s.expert) slides.push({ kind:'expert' });
   if(s && s.site) slides.push({ kind:'site' });
 
   const wrap = document.getElementById('slides');
@@ -456,6 +464,29 @@ function buildDay(){
       }
       const stage=document.createElement('div'); stage.className='stage'; stage.appendChild(box);
       card.appendChild(stage);
+    }
+
+    else if(c.kind==='expert'){
+      const ex = s.expert || {};
+      const skill = ex.skill || 'woodworking';
+      const project = ex.project || 'chair';
+      card.appendChild(cardHead('🪵', "I'm an Expert!", C.coral));
+      const line=document.createElement('p'); line.className='expertline';
+      line.textContent = "I became an expert in " + skill + "!";
+      card.appendChild(line);
+      const box=document.createElement('div'); box.className='expertphoto';
+      const src = ex.photo || (s && s.photo) || '';
+      if(src){
+        const img=document.createElement('img'); img.src=src; img.alt=s.name+" - "+skill;
+        img.onerror=()=>{ box.innerHTML='<div class="ph">📷 Photo coming soon</div>'; };
+        box.appendChild(img);
+      } else {
+        box.innerHTML='<div class="ph">📷 Photo coming soon</div>';
+      }
+      card.appendChild(box);
+      const ded=document.createElement('p'); ded.className='expertded';
+      ded.textContent = "I dedicate my " + project + " to " + (ex.dedicateTo || '____') + " for being an expert in " + (ex.dedicateSkill || '____') + ".";
+      card.appendChild(ded);
     }
 
     else if(c.kind==='site'){
