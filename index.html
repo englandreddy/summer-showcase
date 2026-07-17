@@ -320,10 +320,6 @@
         <div class="slcount" id="slCount"></div>
         <div class="sldots" id="slDots"></div>
       </div>
-      <div class="slnav">
-        <button class="btn secondary" id="slPrev" onclick="slide(-1)">&larr; Back</button>
-        <button class="btn" id="slNext" onclick="slide(1)">Next &rarr;</button>
-      </div>
     </div>
   </section>
 
@@ -540,9 +536,8 @@ function showSlide(i){
   const sub=document.getElementById('daySub'); if(sub) sub.style.display = (curSlide===0 ? 'none' : '');
   document.querySelectorAll('#slDots .sldot').forEach((d,k)=>d.classList.toggle('on', k===curSlide));
   document.getElementById('slCount').textContent = 'Step ' + (curSlide+1) + ' of ' + els.length;
-  document.getElementById('slPrev').disabled = (curSlide===0);
   var _sp=document.getElementById('sidePrev'); if(_sp) _sp.disabled = (curSlide===0);
-  document.getElementById('slNext').textContent = (curSlide===els.length-1) ? '↺ Start over' : 'Next →';
+  var _sn=document.getElementById('sideNext'); if(_sn) _sn.disabled = (curSlide===els.length-1);
   window.scrollTo(0,0);
 }
 function slide(dir){
